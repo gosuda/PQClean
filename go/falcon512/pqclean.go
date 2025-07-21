@@ -1,8 +1,10 @@
 package falcon512
 
 import (
-	"github.com/gotranspile/cxgo/runtime/libc"
+	"crypto/rand"
 	"unsafe"
+
+	"github.com/gotranspile/cxgo/runtime/libc"
 )
 
 const NONCELEN = 40
@@ -241,5 +243,13 @@ func PQCLEAN_FALCON512_CLEAN_crypto_sign_open(m *uint8, mlen *uint64, sm *uint8,
 	}
 	libc.MemMove(unsafe.Pointer(m), unsafe.Add(unsafe.Pointer((*uint8)(unsafe.Add(unsafe.Pointer(sm), 2))), NONCELEN), int(pmlen))
 	*mlen = pmlen
+	return 0
+}
+
+func PQCLEAN_randombytes(output *uint8, n uint64) int {
+	buf := unsafe.Slice(output, n)
+	if _, err := rand.Read(buf); err != nil {
+		return -1
+	}
 	return 0
 }

@@ -185,7 +185,7 @@ func modp_NTT2_ext(a *uint32, stride uint64, gm *uint32, logn uint, p uint32, p0
 				v++
 				r1 = (*uint32)(unsafe.Add(unsafe.Pointer(r1), unsafe.Sizeof(uint32(0))*uintptr(stride)))
 				return func() *uint32 {
-					r2 += (*uint32)(unsafe.Pointer(uintptr(stride)))
+					r2 = (*uint32)(unsafe.Add(unsafe.Pointer(r2), unsafe.Sizeof(uint32(0))*uintptr(stride)))
 					return r2
 				}()
 			}() {
@@ -251,7 +251,7 @@ func modp_iNTT2_ext(a *uint32, stride uint64, igm *uint32, logn uint, p uint32, 
 				v++
 				r1 = (*uint32)(unsafe.Add(unsafe.Pointer(r1), unsafe.Sizeof(uint32(0))*uintptr(stride)))
 				return func() *uint32 {
-					r2 += (*uint32)(unsafe.Pointer(uintptr(stride)))
+					r2 = (*uint32)(unsafe.Add(unsafe.Pointer(r2), unsafe.Sizeof(uint32(0))*uintptr(stride)))
 					return r2
 				}()
 			}() {
@@ -277,7 +277,7 @@ func modp_iNTT2_ext(a *uint32, stride uint64, igm *uint32, logn uint, p uint32, 
 	}(); k < n; func() *uint32 {
 		k++
 		return func() *uint32 {
-			r += (*uint32)(unsafe.Pointer(uintptr(stride)))
+			r = (*uint32)(unsafe.Add(unsafe.Pointer(r), unsafe.Sizeof(uint32(0))*uintptr(stride)))
 			return r
 		}()
 	}() {
@@ -441,7 +441,7 @@ func zint_rebuild_CRT(xx *uint32, xlen uint64, xstride uint64, num uint64, prime
 		}(); v < num; func() *uint32 {
 			v++
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(xstride)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(xstride)))
 				return x
 			}()
 		}() {
@@ -467,7 +467,7 @@ func zint_rebuild_CRT(xx *uint32, xlen uint64, xstride uint64, num uint64, prime
 		}(); u < num; func() *uint32 {
 			u++
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(xstride)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(xstride)))
 				return x
 			}()
 		}() {
@@ -815,7 +815,7 @@ func poly_big_to_fp(d *fpr, f *uint32, flen uint64, fstride uint64, logn uint) {
 	for u = 0; u < n; func() *uint32 {
 		u++
 		return func() *uint32 {
-			f += (*uint32)(unsafe.Pointer(uintptr(fstride)))
+			f = (*uint32)(unsafe.Add(unsafe.Pointer(f), unsafe.Sizeof(uint32(0))*uintptr(fstride)))
 			return f
 		}()
 	}() {
@@ -941,7 +941,7 @@ func poly_sub_scaled_ntt(F *uint32, Flen uint64, Fstride uint64, f *uint32, flen
 			v++
 			y = (*uint32)(unsafe.Add(unsafe.Pointer(y), unsafe.Sizeof(uint32(0))*uintptr(fstride)))
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(tlen)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(tlen)))
 				return x
 			}()
 		}() {
@@ -957,7 +957,7 @@ func poly_sub_scaled_ntt(F *uint32, Flen uint64, Fstride uint64, f *uint32, flen
 		}(); v < n; func() *uint32 {
 			v++
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(tlen)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(tlen)))
 				return x
 			}()
 		}() {
@@ -977,7 +977,7 @@ func poly_sub_scaled_ntt(F *uint32, Flen uint64, Fstride uint64, f *uint32, flen
 		u++
 		x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(Fstride)))
 		return func() *uint32 {
-			y += (*uint32)(unsafe.Pointer(uintptr(tlen)))
+			y = (*uint32)(unsafe.Add(unsafe.Pointer(y), unsafe.Sizeof(uint32(0))*uintptr(tlen)))
 			return y
 		}()
 	}() {
@@ -1147,7 +1147,7 @@ func make_fg_step(data *uint32, logn uint, depth uint, in_ntt int, out_ntt int) 
 		}(); v < n; func() *uint32 {
 			v++
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(slen)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(slen)))
 				return x
 			}()
 		}() {
@@ -1165,7 +1165,7 @@ func make_fg_step(data *uint32, logn uint, depth uint, in_ntt int, out_ntt int) 
 		}(); v < hn; func() *uint32 {
 			v++
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(tlen)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(tlen)))
 				return x
 			}()
 		}() {
@@ -1189,7 +1189,7 @@ func make_fg_step(data *uint32, logn uint, depth uint, in_ntt int, out_ntt int) 
 		}(); v < n; func() *uint32 {
 			v++
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(slen)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(slen)))
 				return x
 			}()
 		}() {
@@ -1207,7 +1207,7 @@ func make_fg_step(data *uint32, logn uint, depth uint, in_ntt int, out_ntt int) 
 		}(); v < hn; func() *uint32 {
 			v++
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(tlen)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(tlen)))
 				return x
 			}()
 		}() {
@@ -1252,7 +1252,7 @@ func make_fg_step(data *uint32, logn uint, depth uint, in_ntt int, out_ntt int) 
 		}(); v < n; func() *uint32 {
 			v++
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(slen)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(slen)))
 				return x
 			}()
 		}() {
@@ -1268,7 +1268,7 @@ func make_fg_step(data *uint32, logn uint, depth uint, in_ntt int, out_ntt int) 
 		}(); v < hn; func() *uint32 {
 			v++
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(tlen)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(tlen)))
 				return x
 			}()
 		}() {
@@ -1289,7 +1289,7 @@ func make_fg_step(data *uint32, logn uint, depth uint, in_ntt int, out_ntt int) 
 		}(); v < n; func() *uint32 {
 			v++
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(slen)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(slen)))
 				return x
 			}()
 		}() {
@@ -1305,7 +1305,7 @@ func make_fg_step(data *uint32, logn uint, depth uint, in_ntt int, out_ntt int) 
 		}(); v < hn; func() *uint32 {
 			v++
 			return func() *uint32 {
-				x += (*uint32)(unsafe.Pointer(uintptr(tlen)))
+				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(tlen)))
 				return x
 			}()
 		}() {
@@ -1485,7 +1485,7 @@ func solve_NTRU_intermediate(logn_top uint, f *int8, g *int8, depth uint, tmp *u
 			ys = (*uint32)(unsafe.Add(unsafe.Pointer(ys), unsafe.Sizeof(uint32(0))*uintptr(dlen)))
 			xd = (*uint32)(unsafe.Add(unsafe.Pointer(xd), unsafe.Sizeof(uint32(0))*uintptr(llen)))
 			return func() *uint32 {
-				yd += (*uint32)(unsafe.Pointer(uintptr(llen)))
+				yd = (*uint32)(unsafe.Add(unsafe.Pointer(yd), unsafe.Sizeof(uint32(0))*uintptr(llen)))
 				return yd
 			}()
 		}() {
@@ -1530,7 +1530,7 @@ func solve_NTRU_intermediate(logn_top uint, f *int8, g *int8, depth uint, tmp *u
 				v++
 				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(slen)))
 				return func() *uint32 {
-					y += (*uint32)(unsafe.Pointer(uintptr(slen)))
+					y = (*uint32)(unsafe.Add(unsafe.Pointer(y), unsafe.Sizeof(uint32(0))*uintptr(slen)))
 					return y
 				}()
 			}() {
@@ -1553,7 +1553,7 @@ func solve_NTRU_intermediate(logn_top uint, f *int8, g *int8, depth uint, tmp *u
 				v++
 				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(slen)))
 				return func() *uint32 {
-					y += (*uint32)(unsafe.Pointer(uintptr(slen)))
+					y = (*uint32)(unsafe.Add(unsafe.Pointer(y), unsafe.Sizeof(uint32(0))*uintptr(slen)))
 					return y
 				}()
 			}() {
@@ -1576,7 +1576,7 @@ func solve_NTRU_intermediate(logn_top uint, f *int8, g *int8, depth uint, tmp *u
 			v++
 			x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(llen)))
 			return func() *uint32 {
-				y += (*uint32)(unsafe.Pointer(uintptr(llen)))
+				y = (*uint32)(unsafe.Add(unsafe.Pointer(y), unsafe.Sizeof(uint32(0))*uintptr(llen)))
 				return y
 			}()
 		}() {
@@ -1596,7 +1596,7 @@ func solve_NTRU_intermediate(logn_top uint, f *int8, g *int8, depth uint, tmp *u
 			v++
 			x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(llen<<1)))
 			return func() *uint32 {
-				y += (*uint32)(unsafe.Pointer(uintptr(llen << 1)))
+				y = (*uint32)(unsafe.Add(unsafe.Pointer(y), unsafe.Sizeof(uint32(0))*uintptr(llen<<1)))
 				return y
 			}()
 		}() {
@@ -1729,7 +1729,7 @@ func solve_NTRU_intermediate(logn_top uint, f *int8, g *int8, depth uint, tmp *u
 			u++
 			Ft = (*uint32)(unsafe.Add(unsafe.Pointer(Ft), unsafe.Sizeof(uint32(0))*uintptr(llen)))
 			return func() *uint32 {
-				Gt += (*uint32)(unsafe.Pointer(uintptr(llen)))
+				Gt = (*uint32)(unsafe.Add(unsafe.Pointer(Gt), unsafe.Sizeof(uint32(0))*uintptr(llen)))
 				return Gt
 			}()
 		}() {
@@ -1758,7 +1758,7 @@ func solve_NTRU_intermediate(logn_top uint, f *int8, g *int8, depth uint, tmp *u
 		u++
 		x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(slen)))
 		return func() *uint32 {
-			y += (*uint32)(unsafe.Pointer(uintptr(llen)))
+			y = (*uint32)(unsafe.Add(unsafe.Pointer(y), unsafe.Sizeof(uint32(0))*uintptr(llen)))
 			return y
 		}()
 	}() {
@@ -1836,7 +1836,7 @@ func solve_NTRU_binary_depth1(logn_top uint, f *int8, g *int8, tmp *uint32) int 
 			ys = (*uint32)(unsafe.Add(unsafe.Pointer(ys), unsafe.Sizeof(uint32(0))*uintptr(dlen)))
 			xd = (*uint32)(unsafe.Add(unsafe.Pointer(xd), unsafe.Sizeof(uint32(0))*uintptr(llen)))
 			return func() *uint32 {
-				yd += (*uint32)(unsafe.Pointer(uintptr(llen)))
+				yd = (*uint32)(unsafe.Add(unsafe.Pointer(yd), unsafe.Sizeof(uint32(0))*uintptr(llen)))
 				return yd
 			}()
 		}() {
@@ -1904,7 +1904,7 @@ func solve_NTRU_binary_depth1(logn_top uint, f *int8, g *int8, tmp *uint32) int 
 			v++
 			x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(llen)))
 			return func() *uint32 {
-				y += (*uint32)(unsafe.Pointer(uintptr(llen)))
+				y = (*uint32)(unsafe.Add(unsafe.Pointer(y), unsafe.Sizeof(uint32(0))*uintptr(llen)))
 				return y
 			}()
 		}() {
@@ -1924,7 +1924,7 @@ func solve_NTRU_binary_depth1(logn_top uint, f *int8, g *int8, tmp *uint32) int 
 			v++
 			x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(llen<<1)))
 			return func() *uint32 {
-				y += (*uint32)(unsafe.Pointer(uintptr(llen << 1)))
+				y = (*uint32)(unsafe.Add(unsafe.Pointer(y), unsafe.Sizeof(uint32(0))*uintptr(llen<<1)))
 				return y
 			}()
 		}() {
@@ -1963,7 +1963,7 @@ func solve_NTRU_binary_depth1(logn_top uint, f *int8, g *int8, tmp *uint32) int 
 				v++
 				x = (*uint32)(unsafe.Add(unsafe.Pointer(x), unsafe.Sizeof(uint32(0))*uintptr(slen)))
 				return func() *uint32 {
-					y += (*uint32)(unsafe.Pointer(uintptr(slen)))
+					y = (*uint32)(unsafe.Add(unsafe.Pointer(y), unsafe.Sizeof(uint32(0))*uintptr(slen)))
 					return y
 				}()
 			}() {
