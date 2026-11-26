@@ -179,7 +179,7 @@ jobs:
         compiler:
           - clang  # XCode (Apple LLVM/Clang)
           - gcc11   # GNU (Homebrew)
-    runs-on: macos-latest
+    runs-on: depot-macos-latest
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
