@@ -34,17 +34,21 @@ on:
       - '*'
       - '!*.md'
   schedule:
-    - cron: '5 4 * * *'
+    - cron: '5 4 * * 1'
+  workflow_dispatch:
 
 name: Test mceliece8192128
 
 concurrency:
-  group: ci-mceliece8192128-${{ github.ref }}
+  group: ci-mceliece8192128-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   test-native:
-    runs-on: ubuntu-latest
+    runs-on: depot-ubuntu-24.04
     container:
       image: pqclean/ci-container:${{ matrix.arch }}
       env:
@@ -55,25 +59,23 @@ jobs:
         CCACHE_SLOPPINESS: include_file_mtime
     strategy:
       matrix:
-        arch:
-          - amd64
-          - i386
+        arch: ${{ fromJSON((github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') && '["amd64","i386"]' || '["amd64"]') }}
         cc:
           - gcc
           - clang
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Cache ccache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-ccache
         with:
           path: /ccache
           key: v1-${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.cc }}-${{ env.GITHUB_WORKFLOW }}-${{ matrix.arch }}
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-python-pip
         with:
@@ -87,35 +89,34 @@ jobs:
           cd test
           python3 -m pytest --verbose --numprocesses=auto
   test-emulated:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     needs:
       - test-native
-    runs-on: ubuntu-latest
+    runs-on: depot-ubuntu-24.04
     strategy:
       matrix:
         arch:
           - armhf
           - unstable-ppc
-        cc:
-          - gcc
-          - clang
+        cc: [gcc]
     env:
       CC: ${{ matrix.cc }}
     steps:
       - name: Register qemu-user-static
         run: |
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Cache ccache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-ccache
         with:
           path: ~/ccache
           key: v1-${{ runner.os }}-build-${{ env.cache-name }}-${{ matrix.cc }}-${{ env.GITHUB_WORKFLOW }}-${{ matrix.arch }}
       - name: Cache pip
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-name: cache-python-pip
         with:
@@ -132,6 +133,7 @@ jobs:
           cd test && \
           python3 -m pytest --verbose --numprocesses=auto"
   test-windows:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     needs:
       - test-native
     strategy:
@@ -141,9 +143,9 @@ jobs:
           - x86
     env:
       PQCLEAN_ONLY_SCHEMES: mceliece8192128
-    runs-on: windows-latest
+    runs-on: depot-windows-2025
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - uses: ilammy/msvc-dev-cmd@v1
@@ -157,7 +159,7 @@ jobs:
           Invoke-WebRequest -OutFile "test\\astyle.exe" "https://rded.nl/pqclean/AStyle.exe"
         shell: powershell
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
       - name: Install python requirements
@@ -168,33 +170,27 @@ jobs:
           python -m pytest --verbose --numprocesses=auto
         shell: cmd
   test-macos:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     needs:
       - test-native
     env:
+      CC: clang
       PQCLEAN_ONLY_SCHEMES: mceliece8192128
       CCACHE_NOSTATS: 1
       CCACHE_SLOPPINESS: include_file_mtime
-    strategy:
-      matrix:
-        compiler:
-          - clang  # XCode (Apple LLVM/Clang)
-          - gcc11   # GNU (Homebrew)
-    runs-on: macos-latest
+    runs-on: depot-macos-latest
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Install astyle
         run: |
           brew install astyle
-      - name: Set up GCC11 compiler
-        run: 'export PATH="/usr/local/bin:$PATH" && export CC=gcc-11'
-        if: matrix.compiler == 'gcc11'
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.x"
       - name: Install Python dependencies
